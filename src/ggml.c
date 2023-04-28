@@ -200,6 +200,11 @@ typedef double ggml_float;
 #define GGML_COMPUTE_FP32_TO_FP16(x) _cvtss_sh(x, 0)
 #endif
 
+#if defined(__GNUC__) && __GNUC__ < 8
+#define _mm256_set_m128(hi, lo) _mm256_insertf128_ps(_mm256_castps128_ps256(lo), (hi), 1)
+#define _mm256_set_m128i(hi, lo) _mm256_insertf128_si256(_mm256_castsi128_si256(lo), (hi), 1)
+#endif
+
 #elif defined(__POWER9_VECTOR__)
 
 #define GGML_COMPUTE_FP16_TO_FP32(x) ggml_compute_fp16_to_fp32(x)
